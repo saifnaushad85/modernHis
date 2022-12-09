@@ -1,0 +1,60 @@
+<!--
+  @description       : 
+  @author            : Naushad Ali
+  @group             : 
+  @last modified on  : 12-08-2022
+  @last modified by  : Naushad Ali
+-->
+<template>
+    <lightning-card title="Admission Form">
+        <div>
+            <lightning-badge label="Patient Details"></lightning-badge>
+        </div>
+        <div slot="actions">
+            
+            <lightning-button variant="success" label="Save Admission" slot="actions" title="titleName" onclick={saveAdmission}></lightning-button>
+            <lightning-button variant="success" label="Cancel" slot="actions" title="titleName"
+                onclick={cancelHandle}></lightning-button>
+        </div>
+        
+        <div class="slds-var-p-around_medium lgc-bg">
+            <lightning-layout multiple-rows>
+            
+                <lightning-layout-item size="6" padding="around-small" small-device-size="3" medium-device-size="6" large-device-size="3" >
+                    <div class="custom-box">
+                        <lightning-input type="text" name="Bedno" class="validate" label="Bed no"   value={admissionRecord.BedNo__c} required  onchange={handleOnChange} ></lightning-input>
+                        <lightning-input type="text" name="Patientname" class="validate" label="Patient Name" value={admissionRecord.PA_Name__c} required  onchange={handleOnChange}></lightning-input>
+                        <lightning-input type="text" name="Email" class="validate" label="Email" value={admissionRecord.Patient_Email__c} required  onchange={handleOnChange}></lightning-input>
+                        <lightning-combobox
+                            name="drpDoctor"
+                            label="Doctor/Prscriber"
+                            value={value}
+                            placeholder="Select Doctor"
+                            options={options}
+                            class="validate"
+                            onchange={handleChange}  ></lightning-combobox>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small" small-device-size="3" medium-device-size="6" large-device-size="3">
+                    <div class="custom-box">
+                        <lightning-input type="date" name="DOB"  class="validate" label="Date of Birth" value={admissionRecord.pdob__c} required  onchange={handleOnChange}></lightning-input>
+                        <lightning-input type="number" name="AGE" class="validate" label="Age" value={admissionRecord.PAge__c}   onchange={handleOnChange}></lightning-input>
+                        <lightning-radio-group name="radioGroup" class="validate" label="Radio Group" options={options} value={value} type="radio" required>
+                        </lightning-radio-group>
+                        <lightning-input type="tel" name="Phone" class="validate" label="Phone No:" value={admissionRecord.PPhoneNo__c}  required  onchange={handleOnChange}></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                
+            </lightning-layout>
+           
+           
+        
+           
+           
+           
+            
+        </div>
+    </lightning-card>
+
+   
+</template>
