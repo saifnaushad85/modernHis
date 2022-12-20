@@ -1,0 +1,39 @@
+<!-- sldsValidatorIgnore -->
+<!--
+  @description       : 
+  @author            : Naushad Ali
+  @group             : 
+  @last modified on  : 12-13-2022
+  @last modified by  : Naushad Ali
+-->
+<template>
+    <lightning-card  title="Admission Details" >
+      <lightning-button variant="base" label="Search" title="titleName" slot="actions" onclick={searchhandle}></lightning-button>    
+    <lightning-button variant="base" label="Export to Excel" title="titleName" slot="actions"
+        onclick={searchhandle}></lightning-button>
+        <lightning-button variant="base" label="Print Report" title="titleName" slot="actions"
+            onclick={searchhandle}></lightning-button>
+        <div>
+          <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" padding="around-small" small-device-size="3" medium-device-size="6" large-device-size="3" >
+             <lightning-input type="text" value={searchStr}  variant="standard" name="name" label="Search Value" placeholder="type here..."></lightning-input>
+            </lightning-layout-item>
+            
+          </lightning-layout>
+        </div>
+        <div>
+            <template if:true={admissionList}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={admissionList}
+                    columns={columns}
+                  >
+                </lightning-datatable>
+                </template>
+            <template if:false={admissionList}>
+              No Record Found Errir is : {error}
+            </template>
+        </div>
+        <p slot="footer">Card Footer</p>
+    </lightning-card>
+</template>

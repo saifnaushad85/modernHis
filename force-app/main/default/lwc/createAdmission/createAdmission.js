@@ -1,5 +1,6 @@
 import { LightningElement,wire,track } from 'lwc';
 import createAdmission from '@salesforce/apex/AddmissionController.createAddmission';
+import doctorList from '@salesforce/apex/DoctorController.doctorList';
 import PADMISSION_OBJECT from '@salesforce/schema/PAdmission__c';
 import BEDNO from '@salesforce/schema/PAdmission__c.BedNo__c';
 import PName from '@salesforce/schema/PAdmission__c.PA_Name__c';
@@ -17,6 +18,13 @@ export default class CreateAdmission extends LightningElement {
 
     admission = {};
     @track admisionId;
+    @track searchdocName;
+    @track selectedGender;
+    @track doctorID;
+    @track doctorsList;
+    @track messageResult = false;
+    @track isShowResult = true;
+    @track showSearchValues = false;
     
     @track admissionRecord = {
         BedNo__c: BEDNO,
@@ -24,7 +32,8 @@ export default class CreateAdmission extends LightningElement {
         PAge__c: PAGE,
         Patient_Email__c: PEMAIL,
         PPhoneNo__c: PHONENo,
-        ReferedBy__c :'a0W2v00001GhxZVEAZ'
+        ReferedBy__c :'',
+        PGENDER:1,
 
     };
     
@@ -39,7 +48,59 @@ export default class CreateAdmission extends LightningElement {
         return [
             { label: 'Male', value: '1' },
             { label: 'FeMale', value: '2' },
+            { label: 'Other', value: '3' },
         ];
+    }
+
+
+    handleRadioChange(event)
+    {
+        //const selGend = event.detail.value;
+        this.admissionRecord.PGENDER = event.detail.value;
+        //alert(this.admissionRecord.PGENDER);
+        //alert(event.detail.value);
+       // alert(event.detail.value.label);
+
+       
+
+    }
+
+
+
+
+    @wire(doctorList, {strName:'$searchdocName'}) 
+    retrivedoctors({error,data})
+    {
+        this.messageResult = false;
+        if (data) {
+            
+
+            console.log('data::' + data.length);
+            if (data.length > 0 && this.isShowResult) {
+                this.doctorsList = data;
+                this.showSearchValues = true;
+                this.messageResult = false;
+
+            }
+            else if (data.length == 0) { 
+                this.doctorsList = [];
+                this.showSearchValues = false;
+                if (this.searchdocName != '')
+                { 
+                    this.messageResult = trur;
+                }
+            }
+        }
+        else if (error) { 
+            this.doctorID = '';
+            this.searchdocName = '';
+            this.doctorsList = [];
+            this.showSearchValues -= false;
+            this.messageResult = true;
+
+
+        }
+
     }
 
 
@@ -95,14 +156,16 @@ export default class CreateAdmission extends LightningElement {
             this.admissionRecord.PA_Name__c= event.target.value;
 
         }
+
+       
     }
     
     saveAdmission() {
         if (this.isInputValid()) {
            
-            alert(JSON.stringify(this.admissionRecord));
+           // alert(JSON.stringify(this.admissionRecord));
             console.log(this.admissionRecord);
-            alert('cannot save the value');
+           // alert('cannot save the value');
            // return;
            //AdmissionObj
             createAdmission({AdmissionObj: this.admissionRecord})
@@ -114,10 +177,21 @@ export default class CreateAdmission extends LightningElement {
                 })
                 .catch(error => {
 
+
+                   const errmessage = error.body.message;
+                    let custerromess = '';
+                    if (errmessage.includes('Patient is already admiitted')) {
+                        custerromess = 'Patient is already admiitted';
+
+                    }
+                    else { 
+                        custerromess = errmessage;
+                    }
+
                      this.dispatchEvent(
                        new ShowToastEvent({
                          title: 'Error while Saving Records',
-                         message: error.body.message,
+                         message: custerromess,
                          variant: 'error',
                         }),
                      );
@@ -127,7 +201,7 @@ export default class CreateAdmission extends LightningElement {
         }
         else {
             console.log(this.admission);
-            alert(JSON.stringify(this.admission));
+           // alert(JSON.stringify(this.admission));
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Please Enter the required Fields',
@@ -137,7 +211,37 @@ export default class CreateAdmission extends LightningElement {
             );
         }
         
-     }
+    }
+    
+    handleClick(event) { 
+        this.isShowResult = true;
+        this.messageResult = false;
+    }
+
+    handlekeyChange(event) { 
+        this.messageResult = false;
+        this.searchdocName = event.target.value;
+    }
+
+    handleDoctorSelection(event)
+    {
+    this.showSearchValues = false;
+    this.isShowResult = false;
+    this.messageResult=false;
+    //Set the parent calendar id
+    this.doctorID =  event.target.dataset.value;
+    //Set the parent calendar label
+    this.searchdocName =  event.target.dataset.label; 
+    this.admissionRecord.ReferedBy__c = this.doctorID;
+    console.log('DoctorId::'+this.doctorID); 
+    console.log('DoctorName::'+this.searchdocName);    
+    //const selectedEvent = new CustomEvent('selected', { detail: this.doctorID });
+        // Dispatches the event.
+    //this.dispatchEvent(selectedEvent); 
+
+    }
+    
+    
 
 
 }

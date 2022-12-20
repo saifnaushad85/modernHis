@@ -1,12 +1,13 @@
+<!-- sldsValidatorIgnore -->
 <!--
   @description       : 
   @author            : Naushad Ali
   @group             : 
-  @last modified on  : 12-09-2022
+  @last modified on  : 12-15-2022
   @last modified by  : Naushad Ali
 -->
 <template>
-    <lightning-card title="Admission Form Updated on 09-12-2022">
+    <lightning-card title="Admission Form">
         <div>
             <lightning-badge label="Patient Details"></lightning-badge>
         </div>
@@ -25,21 +26,57 @@
                         <lightning-input type="text" name="Bedno" class="validate" label="Bed no"   value={admissionRecord.BedNo__c} required  onchange={handleOnChange} ></lightning-input>
                         <lightning-input type="text" name="Patientname" class="validate" label="Patient Name" value={admissionRecord.PA_Name__c} required  onchange={handleOnChange}></lightning-input>
                         <lightning-input type="text" name="Email" class="validate" label="Email" value={admissionRecord.Patient_Email__c} required  onchange={handleOnChange}></lightning-input>
-                        <lightning-combobox
-                            name="drpDoctor"
-                            label="Doctor/Prscriber"
-                            value={value}
-                            placeholder="Select Doctor"
-                            options={options}
-                            class="validate"
-                            onchange={handleChange}  ></lightning-combobox>
+                       
+                        <div class="slds-form-element__control">
+                            <div class="slds-combobox_container">
+                                <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false"
+                                    aria-haspopup="listbox" role="combobox">
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" 
+                        role="none">
+                        <lightning-input type="text"
+                        id="comboboxDocName" onchange={handlekeyChange} value={searchdocName}
+                        onkeydown={handleClick} onclick={handleClick} onblur={handleClick}
+                        label="Doctor/Prscribe"  aria-autocomplete="list" aria-controls="listbox-id-12" 
+                        role="textbox" placeholder="Search Doctor Name...">
+                    </lightning-input>
+                        <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right searchButtonStyle"
+                            title="Remove selected option">
+                            <lightning-button-icon icon-name="utility:search" variant="bare" alternative-text="Search" aria-hidden="true"
+                                onclick={handleOpenModal}>
+                            </lightning-button-icon>
+                        </button>
+                        </div>
+                    
+                    </div>
+                    <div if:true={messageResult}>
+                        No Result Found
+                    </div>
+                    <template if:true={showSearchValues}>
+                        <div class="slds-box" style="height: 130px; overflow-y: scroll;">
+                            <ul class="" role="">
+                                <template for:each={doctorsList} for:item="docObj">
+                                    <li class="slds-p-around_x-small" key={docObj.Id} style="cursor: pointer;"
+                                    onclick={handleDoctorSelection} data-value={docObj.Id}
+                                    data-label={docObj.Name} >
+                                    {docObj.Name}
+
+                                    </li>
+                                </template>
+
+                            </ul>
+
+                        </div>
+                    </template>
+                            </div>
+                        </div>
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item size="6" padding="around-small" small-device-size="3" medium-device-size="6" large-device-size="3">
                     <div class="custom-box">
                         <lightning-input type="date" name="DOB"  class="validate" label="Date of Birth" value={admissionRecord.pdob__c} required  onchange={handleOnChange}></lightning-input>
                         <lightning-input type="number" name="AGE" class="validate" label="Age" value={admissionRecord.PAge__c}   onchange={handleOnChange}></lightning-input>
-                        <lightning-radio-group name="radioGroup" class="validate" label="Radio Group" options={options} value={value} type="radio" required>
+                        <lightning-radio-group name="radioGroup" class="validate" 
+                        label="Gender/Sex" options={options} value={value} type="radio" onchange={handleRadioChange} required>
                         </lightning-radio-group>
                         <lightning-input type="tel" name="Phone" class="validate" label="Phone No:" value={admissionRecord.PPhoneNo__c}  required  onchange={handleOnChange}></lightning-input>
                     </div>

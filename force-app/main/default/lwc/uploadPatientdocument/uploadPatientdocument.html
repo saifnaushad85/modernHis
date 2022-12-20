@@ -1,0 +1,49 @@
+<!--
+  @description       : 
+  @author            : Naushad Ali
+  @group             : 
+  @last modified on  : 12-14-2022
+  @last modified by  : Naushad Ali
+-->
+<template>
+    <lightning-card   title="Upload Patient Decument" icon-name="standard:account">
+      <div> 
+        <lightning-input type="file" multiple name="Uploadfiles"  label="File Upload" onchange={handleSelectedFiles} placeholder="type here...">
+
+        </lightning-input></div>
+      <br/>
+      <div class="slds-text-body_small">{fileName}<br/>
+
+        <template if:true={showSpinner}>
+         <lightning-spinner alternative-text="Uplaoding files" size="medium" ></lightning-spinner>
+        </template>
+
+         
+      </div>
+      <br/>
+
+      <div>
+        <lightning-button  variant="brand"  label="Save to AWS"  onclick={handleFileUpload}></lightning-button>
+      </div>
+
+
+    </lightning-card>
+
+    <lightning-card   title="Patient Document List " icon-name="standard:account">
+     <div style="width:auto;">
+        <ul class="slds-m-around_small">
+            <template for:each={tableData} for:item="attchment" >
+                <li key={attchment.Id}>
+                    {attchment.File_Name__C},
+                    <lightning-formatted-url  value={attchment.FileUrl__c} target="_blank" >
+                        {attchment.FileUrl__c}
+                    </lightning-formatted-url>
+
+                </li>
+            </template>
+        </ul>
+     </div>
+        
+    </lightning-card>
+    
+</template>
