@@ -12,7 +12,6 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Modern Hospital</label>
     <navType>Standard</navType>
-    <tabs>Appointment__c</tabs>
     <tabs>Admission_Form_HIS_with_List_and_LDS</tabs>
     <tabs>PAdmission__c</tabs>
     <uiType>Lightning</uiType>

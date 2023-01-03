@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrescriptionDetails</fullName>
+    <columns>PatientID__c</columns>
+    <columns>PDetail__c</columns>
+    <columns>NAME</columns>
+    <columns>P_Type__c</columns>
+    <columns>Pat_Perscription__c</columns>
+    <columns>PerQty__c</columns>
+    <columns>PerAmt__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>PrescriptionDetails</label>
+</ListView>

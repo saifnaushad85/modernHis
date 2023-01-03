@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Naushad Ali
  * @group             : 
- * @last modified on  : 12-15-2022
+ * @last modified on  : 01-03-2023
  * @last modified by  : Naushad Ali
 **/
 public class AddmissionController {
@@ -20,13 +20,16 @@ public class AddmissionController {
         List<PAdmission__c> admislist;
         if(pName.length()==0)
         {
+            
+
             admislist=[select Id,PA_Name__c,Name,Patient_Email__c,PaymentStatus__c,PDOB__c,
                  BedNo__c,PAge__c,PGender__c,PPhoneNo__c,ReferedBy__r.Name from PAdmission__c  order by BedNo__c ];
 
         }
         else {
+          String  strSearch='%'+pName+'%';
           admislist = [select Id,PA_Name__c,Name,Patient_Email__c,PaymentStatus__c,PDOB__c,
-                 BedNo__c,PAge__c,PGender__c,PPhoneNo__c,ReferedBy__r.Name from PAdmission__c  where PA_Name__c=:pName  order by BedNo__c];
+                 BedNo__c,PAge__c,PGender__c,PPhoneNo__c,ReferedBy__r.Name from PAdmission__c  where PA_Name__c like:strSearch  order by BedNo__c];
         }
         return admislist;
     }
@@ -43,9 +46,10 @@ public class AddmissionController {
         }
         catch(Exception ex)
         {
-            //system.debug(ex.getMessage());
             newAdd=null;
             throw new AuraHandledException(ex.getMessage());
+            
+            //return null;
         }
         return newAdd;
     }
