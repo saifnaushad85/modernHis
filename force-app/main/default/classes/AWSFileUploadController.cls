@@ -16,8 +16,10 @@ public with sharing class AWSFileUploadController {
         String filename = dateString + '_' + parentId + '_' + strfileName;
         
         //AWS specific information
-        String key = '######'; //AWS key
-        String secret = '#######'; //AWS Secret key
+
+        String key = '#######'; //AWS key
+        String secret = '######'; //AWS Secret key
+
         String bucketname = 'hospitaldocuments2022'; //AWS bucket name
         String host = 's3.amazonaws.com:443'; //'s3.amazonaws.com:443'
        
